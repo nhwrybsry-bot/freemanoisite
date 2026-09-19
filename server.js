@@ -37,13 +37,14 @@ app.post('/send-email', (req, res) => {
 
     // 4. שליחת המייל בפועל
     transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
+               if (error) {
             console.log(error);
-            res.send('אופס! היתה שגיאה בשליחת המייל.');
+            res.send('שגיאה נסה שוב עוד 24 שעות');
         } else {
             console.log('Email sent: ' + info.response);
-            res.send('הפרטים נשלחו בהצלחה לתיבת המייל שלך!');
+            res.send('המנוי יתקבל בעוד 24 שעות');
         }
+
     });
 });
 
