@@ -9,8 +9,8 @@ app.use(express.json());
 // מאפשר לשרת להציג קבצים כמו תמונות שנמצאים בתיקייה שלך
 app.use(express.static(__dirname));
 
-// הגדרות הבוט של טלגרם
-const TELEGRAM_BOT_TOKEN = '8712536099:AAGnazkihREbhPJsGpgmAXOClVF3LSFneGg';
+// הגדרות הבוט של טלגרם (הכנס כאן את הטוקן החדש שלך)
+const TELEGRAM_BOT_TOKEN = 'הדבק_כאן_את_הטוקן_החדש_שלך';
 const TELEGRAM_CHAT_ID = '7519574690';
 
 // פונקציה מרכזית ששולחת את ההודעה לטלגרם
